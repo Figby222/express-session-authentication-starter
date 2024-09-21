@@ -3,4 +3,32 @@ const LocalStrategy = require('passport-local').Strategy;
 const connection = require('./database');
 const User = connection.models.User;
 
-// TODO: passport.use();
+const customFields = {
+    usernameField: "username",
+    passwordField: "password"
+}
+
+const verifyCallback = (username, password, done) => {
+    connection.query(`SELECT * FROM users WHERE username = $1`, [username])
+        .then((rows) => Promise.resolve(rows[0]))
+        .then((user) => {
+            if (!user) {
+                return done(null, false);
+            }
+
+            const isValid = validPassword(password, user.hash, user.salt);
+
+            if (isValid) {
+                return done(null, user);
+            } else {
+                return done(null, false);
+            }
+        })
+        .catch((err) => {
+            done(err);
+        });
+}
+
+const strategy = new LocalStrategy(verifyCallback);
+
+passport.use(strategy);
