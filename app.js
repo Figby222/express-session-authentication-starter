@@ -7,7 +7,7 @@ var routes = require('./routes');
 const connection = require('./config/database');
 
 // Package documentation - https://www.npmjs.com/package/connect-mongo
-const MongoStore = require('connect-mongo')(session);
+const PostgresStore = require('connect-pg-simple')(session);
 
 // Need to require the entire Passport config module so app.js knows about it
 require('./config/passport');
