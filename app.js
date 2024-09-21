@@ -32,6 +32,19 @@ app.use(express.urlencoded({extended: true}));
 
 // TODO
 
+const ONE_DAY = 24 * 60 * 60 * 1000;
+
+app.use(expressSession({
+    store: new pgSession({
+        pool: connection,
+        tableName: user_sessions,
+    }),
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: ONE_DAY }
+}))
+
 /**
  * -------------- PASSPORT AUTHENTICATION ----------------
  */
