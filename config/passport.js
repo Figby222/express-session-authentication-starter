@@ -30,7 +30,7 @@ const verifyCallback = (username, password, done) => {
         });
 }
 
-const strategy = new LocalStrategy(verifyCallback);
+const strategy = new LocalStrategy(customFields, verifyCallback);
 
 passport.use(strategy);
 
