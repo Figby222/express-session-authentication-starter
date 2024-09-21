@@ -12,7 +12,20 @@ const User = connection.models.User;
  router.post('/login', passport.authenticate("local"), (req, res, next) => {});
 
  // TODO
- router.post('/register', (req, res, next) => {});
+ router.post('/register', (req, res, next) => {
+    const saltHash = passwordUtils.genPassword(req.body.password);
+
+    const { salt, hash } = saltHash;
+
+    connection.query(`
+        INSERT INTO users (username, hash, salt)
+        VALUES ($1, $2, $3)
+        RETURNING username, hash, salt
+    `, [req.body.password, hash, salt])
+    .then(console.log);
+
+    res.redirect("/")
+ });
 
 
  /**
