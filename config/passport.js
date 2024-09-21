@@ -32,3 +32,16 @@ const verifyCallback = (username, password, done) => {
 const strategy = new LocalStrategy(verifyCallback);
 
 passport.use(strategy);
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser((userId, done) => {
+    connection.query(`SELECT * FROM users WHERE users.id = $1`, [userId])
+        .then((rows) => Promise.resolve(rows[0]))
+        .then((user) => {
+            done(null, user);
+        })
+        .catch(done)
+})
