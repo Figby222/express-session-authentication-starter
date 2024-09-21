@@ -10,6 +10,7 @@ const customFields = {
 
 const verifyCallback = (username, password, done) => {
     connection.query(`SELECT * FROM users WHERE username = $1`, [username])
+        .then((response) => Promise.resolve(response.rows))
         .then((rows) => Promise.resolve(rows[0]))
         .then((user) => {
             if (!user) {
