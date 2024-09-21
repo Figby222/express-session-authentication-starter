@@ -8,7 +8,7 @@ const connection = require('../config/database');
  */
 
  // TODO
- router.post('/login', passport.authenticate("local", { failureRedirect: "/login-failure", successRedirect: "/login-success" }), (req, res, next) => {});
+ router.post('/login', passport.authenticate("local", { failureRedirect: "/login-failure", successRedirect: "/login-success" }));
 
  // TODO
  router.post('/register', (req, res, next) => {
