@@ -40,6 +40,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((userId, done) => {
     connection.query(`SELECT * FROM users WHERE users.id = $1`, [userId])
+        .then(((response) => Promise.resolve(response.rows)))
         .then((rows) => Promise.resolve(rows[0]))
         .then((user) => {
             done(null, user);
